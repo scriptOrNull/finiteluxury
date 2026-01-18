@@ -1,7 +1,7 @@
 import lifestyleUrban from '@/assets/lifestyle-urban.jpg';
-import lifestyleCafe from '@/assets/lifestyle-cafe.jpg';
-import lifestyleArchitecture from '@/assets/lifestyle-architecture.jpg';
 import lifestyleNight from '@/assets/lifestyle-night.jpg';
+import productShirtBlack from '@/assets/product-shirt-black.jpg';
+import productSneakersWhite from '@/assets/product-sneakers-white.jpg';
 import ScrollReveal from './ScrollReveal';
 
 const lookbookItems = [
@@ -11,14 +11,14 @@ const lookbookItems = [
     description: 'Elevated essentials for the city',
   },
   {
-    image: lifestyleCafe,
-    title: 'Refined Comfort',
-    description: 'Effortless sophistication',
+    image: productShirtBlack,
+    title: 'Premium Shirt',
+    description: 'Refined tailoring',
   },
   {
-    image: lifestyleArchitecture,
-    title: 'Bold Statement',
-    description: 'Stand out with intention',
+    image: productSneakersWhite,
+    title: 'Clean Sneakers',
+    description: 'Everyday luxury',
   },
   {
     image: lifestyleNight,
