@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -12,6 +12,8 @@ interface ImageUploadProps {
 
 const ImageUpload = ({ images, onImagesChange, maxImages = 5 }: ImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,24 +88,89 @@ const ImageUpload = ({ images, onImagesChange, maxImages = 5 }: ImageUploadProps
     onImagesChange(newImages);
   };
 
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index.toString());
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverIndex(index);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+
+    const newImages = [...images];
+    const [draggedImage] = newImages.splice(draggedIndex, 1);
+    newImages.splice(dropIndex, 0, draggedImage);
+    
+    onImagesChange(newImages);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
   return (
     <div className="space-y-3">
       {/* Image Previews */}
       {images.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {images.map((url, index) => (
-            <div key={index} className="relative group">
-              <div className="w-20 h-20 border border-border overflow-hidden">
+            <div
+              key={url}
+              draggable
+              onDragStart={(e) => handleDragStart(e, index)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, index)}
+              onDragEnd={handleDragEnd}
+              className={`relative group cursor-grab active:cursor-grabbing transition-all duration-200 ${
+                draggedIndex === index ? 'opacity-50 scale-95' : ''
+              } ${
+                dragOverIndex === index && draggedIndex !== index
+                  ? 'ring-2 ring-primary ring-offset-2'
+                  : ''
+              }`}
+            >
+              <div className="w-20 h-20 border border-border overflow-hidden relative">
                 <img
                   src={url}
                   alt={`Product ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover pointer-events-none"
                 />
+                {/* Drag handle indicator */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                  <GripVertical 
+                    size={20} 
+                    className="text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" 
+                  />
+                </div>
+                {/* Position badge */}
+                <div className="absolute bottom-0 left-0 bg-black/70 text-white text-xs px-1.5 py-0.5">
+                  {index + 1}
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute -top-2 -right-2 p-1 bg-background border border-border rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute -top-2 -right-2 p-1 bg-background border border-border rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
                 aria-label="Remove image"
               >
                 <X size={12} />
@@ -111,6 +178,12 @@ const ImageUpload = ({ images, onImagesChange, maxImages = 5 }: ImageUploadProps
             </div>
           ))}
         </div>
+      )}
+
+      {images.length > 1 && (
+        <p className="text-xs text-muted-foreground">
+          Drag images to reorder. First image is the main product image.
+        </p>
       )}
 
       {/* Upload Button */}
