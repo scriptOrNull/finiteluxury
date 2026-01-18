@@ -97,12 +97,17 @@ export default {
           from: { transform: "translateY(100%)" },
           to: { transform: "translateY(0)" },
         },
+        "shimmer": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(300%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "slide-in-from-right": "slide-in-from-right 0.3s ease-out",
         "slide-in-from-bottom-4": "slide-in-from-bottom 0.3s ease-out",
+        "shimmer": "shimmer 1.5s ease-in-out infinite",
       },
       letterSpacing: {
         luxury: "0.2em",

@@ -59,8 +59,22 @@ const CatalogueContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+        {/* Animated logo/brand mark */}
+        <div className="relative mb-8">
+          <div className="w-12 h-12 border border-foreground/20 animate-pulse" />
+          <div className="absolute inset-0 w-12 h-12 border border-foreground animate-ping opacity-20" />
+        </div>
+        
+        {/* Loading text with letter spacing */}
+        <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground">
+          Loading...
+        </p>
+        
+        {/* Minimal progress bar */}
+        <div className="mt-6 w-32 h-[1px] bg-border overflow-hidden">
+          <div className="h-full w-1/2 bg-foreground animate-[shimmer_1.5s_ease-in-out_infinite]" />
+        </div>
       </div>
     );
   }
