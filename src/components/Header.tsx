@@ -1,21 +1,44 @@
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { categories } from '@/data/products';
 
 interface HeaderProps {
   onCartClick: () => void;
-  onCategoryClick: (category: string | null) => void;
-  activeCategory: string | null;
+  onCategoryClick?: (category: string | null) => void;
+  activeCategory?: string | null;
 }
 
 const Header = ({ onCartClick, onCategoryClick, activeCategory }: HeaderProps) => {
   const { totalItems } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleCategoryClick = (category: string | null) => {
-    onCategoryClick(category);
+    if (onCategoryClick) {
+      onCategoryClick(category);
+    } else {
+      // Navigate to category page
+      if (category === null) {
+        navigate('/');
+      } else {
+        navigate(`/category/${category}`);
+      }
+    }
     setMobileMenuOpen(false);
+  };
+
+  const isActiveCategory = (catId: string | null) => {
+    if (activeCategory !== undefined) {
+      return activeCategory === catId;
+    }
+    // Derive from URL
+    if (catId === null) {
+      return location.pathname === '/';
+    }
+    return location.pathname === `/category/${catId}`;
   };
 
   return (
@@ -59,7 +82,7 @@ const Header = ({ onCartClick, onCategoryClick, activeCategory }: HeaderProps) =
           <button
             onClick={() => handleCategoryClick(null)}
             className={`text-sm tracking-wide uppercase transition-all hover:opacity-100 ${
-              activeCategory === null ? 'opacity-100 border-b border-foreground' : 'opacity-60'
+              isActiveCategory(null) ? 'opacity-100 border-b border-foreground' : 'opacity-60'
             }`}
           >
             All
@@ -69,7 +92,7 @@ const Header = ({ onCartClick, onCategoryClick, activeCategory }: HeaderProps) =
               key={cat.id}
               onClick={() => handleCategoryClick(cat.id)}
               className={`text-sm tracking-wide uppercase transition-all hover:opacity-100 ${
-                activeCategory === cat.id ? 'opacity-100 border-b border-foreground' : 'opacity-60'
+                isActiveCategory(cat.id) ? 'opacity-100 border-b border-foreground' : 'opacity-60'
               }`}
             >
               {cat.name}
@@ -85,7 +108,7 @@ const Header = ({ onCartClick, onCategoryClick, activeCategory }: HeaderProps) =
             <button
               onClick={() => handleCategoryClick(null)}
               className={`text-left text-sm tracking-wide uppercase py-2 transition-all ${
-                activeCategory === null ? 'opacity-100' : 'opacity-60'
+                isActiveCategory(null) ? 'opacity-100' : 'opacity-60'
               }`}
             >
               All Products
@@ -95,7 +118,7 @@ const Header = ({ onCartClick, onCategoryClick, activeCategory }: HeaderProps) =
                 key={cat.id}
                 onClick={() => handleCategoryClick(cat.id)}
                 className={`text-left text-sm tracking-wide uppercase py-2 transition-all ${
-                  activeCategory === cat.id ? 'opacity-100' : 'opacity-60'
+                  isActiveCategory(cat.id) ? 'opacity-100' : 'opacity-60'
                 }`}
               >
                 {cat.name}
