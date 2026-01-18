@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { useProducts, Product, formatPrice } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
@@ -8,6 +9,7 @@ import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategoryBanner from '@/components/CategoryBanner';
+import BackToTop from '@/components/BackToTop';
 
 const CategoryContent = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -57,6 +59,17 @@ const CategoryContent = () => {
       <Header onCartClick={() => setCartOpen(true)} />
 
       <main className="flex-1 pt-16 md:pt-28">
+        {/* Back Navigation */}
+        <div className="container mx-auto px-4 pt-4">
+          <button
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft size={16} />
+            <span className="tracking-wide">Back to Home</span>
+          </button>
+        </div>
+
         <CategoryBanner category={category} productCount={categoryProducts.length} />
 
         {/* Featured Products */}
@@ -112,6 +125,8 @@ const CategoryContent = () => {
       )}
 
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
+
+      <BackToTop />
     </div>
   );
 };

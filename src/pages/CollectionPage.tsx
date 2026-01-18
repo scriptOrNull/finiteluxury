@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Sparkles, TrendingUp, Tag } from 'lucide-react';
 import { useProducts, Product, formatPrice } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
@@ -7,7 +8,7 @@ import ProductGrid from '@/components/ProductGrid';
 import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
-import { Sparkles, TrendingUp, Tag } from 'lucide-react';
+import BackToTop from '@/components/BackToTop';
 
 const collectionConfig = {
   'new-arrivals': {
@@ -35,6 +36,7 @@ const collectionConfig = {
 
 const CollectionContent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const collectionId = location.pathname.replace('/', ''); // Get 'new-arrivals', 'best-sellers', or 'sale'
   const { products, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -70,6 +72,17 @@ const CollectionContent = () => {
       <Header onCartClick={() => setCartOpen(true)} />
 
       <main className="flex-1 pt-16 md:pt-28">
+        {/* Back Navigation */}
+        <div className="container mx-auto px-4 pt-4">
+          <button
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft size={16} />
+            <span className="tracking-wide">Back to Home</span>
+          </button>
+        </div>
+
         {/* Collection Banner */}
         <section className="bg-secondary py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">
@@ -118,6 +131,8 @@ const CollectionContent = () => {
       )}
 
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
+
+      <BackToTop />
     </div>
   );
 };
