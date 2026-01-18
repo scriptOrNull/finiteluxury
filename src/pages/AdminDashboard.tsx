@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus, Edit, Trash2, LogOut, Package, Tags } from 'lucide-react';
 import { toast } from 'sonner';
 import ImageUpload from '@/components/ImageUpload';
@@ -58,6 +59,10 @@ const AdminDashboard = () => {
     name: '',
     description: '',
   });
+
+  // Quick add category dialog
+  const [showQuickAddCategory, setShowQuickAddCategory] = useState(false);
+  const [quickCategoryName, setQuickCategoryName] = useState('');
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -224,6 +229,38 @@ const AdminDashboard = () => {
     setShowCategoryForm(false);
   };
 
+  const handleQuickAddCategory = async () => {
+    if (!quickCategoryName.trim()) {
+      toast.error('Please enter a category name');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('categories')
+      .insert({ name: quickCategoryName.trim() })
+      .select()
+      .single();
+
+    if (error) {
+      if (error.message.includes('duplicate')) {
+        toast.error('Category already exists');
+      } else {
+        toast.error('Failed to create category');
+      }
+      return;
+    }
+
+    toast.success('Category created');
+    setQuickCategoryName('');
+    setShowQuickAddCategory(false);
+    fetchCategories();
+    
+    // Auto-select the new category
+    if (data) {
+      setProductForm(p => ({ ...p, category_id: data.id }));
+    }
+  };
+
   const editProduct = (product: Product) => {
     setEditingProduct(product);
     setProductForm({
@@ -361,21 +398,65 @@ const AdminDashboard = () => {
                   
                   <div className="space-y-2">
                     <Label>Category *</Label>
-                    <Select
-                      value={productForm.category_id}
-                      onValueChange={(v) => setProductForm(p => ({ ...p, category_id: v }))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex gap-2">
+                      <Select
+                        value={productForm.category_id}
+                        onValueChange={(v) => setProductForm(p => ({ ...p, category_id: v }))}
+                      >
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.length === 0 ? (
+                            <div className="px-2 py-4 text-center text-sm text-muted-foreground">
+                              No categories yet
+                            </div>
+                          ) : (
+                            categories.map((cat) => (
+                              <SelectItem key={cat.id} value={cat.id}>
+                                {cat.name}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <Dialog open={showQuickAddCategory} onOpenChange={setShowQuickAddCategory}>
+                        <DialogTrigger asChild>
+                          <Button type="button" variant="outline" size="icon" title="Add new category">
+                            <Plus size={16} />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md">
+                          <DialogHeader>
+                            <DialogTitle>Quick Add Category</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 pt-4">
+                            <div className="space-y-2">
+                              <Label>Category Name</Label>
+                              <Input
+                                value={quickCategoryName}
+                                onChange={(e) => setQuickCategoryName(e.target.value)}
+                                placeholder="e.g., Shirts, Shoes, Accessories"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    handleQuickAddCategory();
+                                  }
+                                }}
+                              />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                              <Button type="button" variant="outline" onClick={() => setShowQuickAddCategory(false)}>
+                                Cancel
+                              </Button>
+                              <Button type="button" onClick={handleQuickAddCategory}>
+                                Create
+                              </Button>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </div>
                   
                   <div className="space-y-2">
