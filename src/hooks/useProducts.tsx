@@ -17,6 +17,11 @@ interface DbProduct {
   colors: string[] | null;
   description: string | null;
   is_active: boolean;
+  is_new_arrival: boolean;
+  is_best_seller: boolean;
+  is_on_sale: boolean;
+  sale_price: number | null;
+  created_at: string;
 }
 
 export interface Product {
@@ -29,6 +34,11 @@ export interface Product {
   sizes: string[];
   colors?: string[];
   description?: string;
+  isNewArrival: boolean;
+  isBestSeller: boolean;
+  isOnSale: boolean;
+  salePrice?: number;
+  createdAt: string;
 }
 
 export const useProducts = () => {
@@ -69,6 +79,11 @@ export const useProducts = () => {
           sizes: p.sizes,
           colors: p.colors || undefined,
           description: p.description || undefined,
+          isNewArrival: p.is_new_arrival,
+          isBestSeller: p.is_best_seller,
+          isOnSale: p.is_on_sale,
+          salePrice: p.sale_price || undefined,
+          createdAt: p.created_at,
         };
       });
       
@@ -88,10 +103,23 @@ export const useProducts = () => {
     }));
   }, [categories]);
 
+  // Collection filters
+  const newArrivals = useMemo(() => 
+    products.filter(p => p.isNewArrival), [products]);
+  
+  const bestSellers = useMemo(() => 
+    products.filter(p => p.isBestSeller), [products]);
+  
+  const saleProducts = useMemo(() => 
+    products.filter(p => p.isOnSale), [products]);
+
   return {
     products,
     categories: formattedCategories,
     loading,
+    newArrivals,
+    bestSellers,
+    saleProducts,
   };
 };
 

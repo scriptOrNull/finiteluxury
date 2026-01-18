@@ -47,8 +47,12 @@ export type Database = {
           id: string
           images: string[]
           is_active: boolean
+          is_best_seller: boolean
+          is_new_arrival: boolean
+          is_on_sale: boolean
           name: string
           price: number
+          sale_price: number | null
           sizes: string[]
           updated_at: string
         }
@@ -60,8 +64,12 @@ export type Database = {
           id?: string
           images?: string[]
           is_active?: boolean
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
+          is_on_sale?: boolean
           name: string
           price: number
+          sale_price?: number | null
           sizes?: string[]
           updated_at?: string
         }
@@ -73,8 +81,12 @@ export type Database = {
           id?: string
           images?: string[]
           is_active?: boolean
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
+          is_on_sale?: boolean
           name?: string
           price?: number
+          sale_price?: number | null
           sizes?: string[]
           updated_at?: string
         }

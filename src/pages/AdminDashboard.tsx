@@ -29,6 +29,10 @@ interface Product {
   colors: string[] | null;
   description: string | null;
   is_active: boolean;
+  is_new_arrival: boolean;
+  is_best_seller: boolean;
+  is_on_sale: boolean;
+  sale_price: number | null;
 }
 
 const AdminDashboard = () => {
@@ -52,6 +56,10 @@ const AdminDashboard = () => {
     colors: '',
     description: '',
     is_active: true,
+    is_new_arrival: false,
+    is_best_seller: false,
+    is_on_sale: false,
+    sale_price: '',
   });
 
   // Category form state
@@ -115,6 +123,10 @@ const AdminDashboard = () => {
       colors: productForm.colors ? productForm.colors.split(',').map(s => s.trim()).filter(Boolean) : null,
       description: productForm.description.trim() || null,
       is_active: productForm.is_active,
+      is_new_arrival: productForm.is_new_arrival,
+      is_best_seller: productForm.is_best_seller,
+      is_on_sale: productForm.is_on_sale,
+      sale_price: productForm.sale_price ? parseInt(productForm.sale_price) : null,
     };
 
     if (editingProduct) {
@@ -218,6 +230,10 @@ const AdminDashboard = () => {
       colors: '',
       description: '',
       is_active: true,
+      is_new_arrival: false,
+      is_best_seller: false,
+      is_on_sale: false,
+      sale_price: '',
     });
     setEditingProduct(null);
     setShowProductForm(false);
@@ -272,6 +288,10 @@ const AdminDashboard = () => {
       colors: product.colors?.join(', ') || '',
       description: product.description || '',
       is_active: product.is_active,
+      is_new_arrival: product.is_new_arrival,
+      is_best_seller: product.is_best_seller,
+      is_on_sale: product.is_on_sale,
+      sale_price: product.sale_price?.toString() || '',
     });
     setShowProductForm(true);
   };
@@ -493,6 +513,45 @@ const AdminDashboard = () => {
                       onCheckedChange={(c) => setProductForm(p => ({ ...p, is_active: c }))}
                     />
                     <Label>Active (visible in store)</Label>
+                  </div>
+
+                  {/* Collection Tags */}
+                  <div className="md:col-span-2 border border-border p-4 space-y-4">
+                    <Label className="text-sm tracking-wider uppercase">Collection Tags</Label>
+                    <div className="flex flex-wrap gap-6">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={productForm.is_new_arrival}
+                          onCheckedChange={(c) => setProductForm(p => ({ ...p, is_new_arrival: c }))}
+                        />
+                        <Label>New Arrival</Label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={productForm.is_best_seller}
+                          onCheckedChange={(c) => setProductForm(p => ({ ...p, is_best_seller: c }))}
+                        />
+                        <Label>Best Seller</Label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={productForm.is_on_sale}
+                          onCheckedChange={(c) => setProductForm(p => ({ ...p, is_on_sale: c }))}
+                        />
+                        <Label>On Sale</Label>
+                      </div>
+                    </div>
+                    {productForm.is_on_sale && (
+                      <div className="space-y-2 max-w-xs">
+                        <Label>Sale Price (NGN)</Label>
+                        <Input
+                          type="number"
+                          value={productForm.sale_price}
+                          onChange={(e) => setProductForm(p => ({ ...p, sale_price: e.target.value }))}
+                          placeholder="Sale price"
+                        />
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-2 md:col-span-2">

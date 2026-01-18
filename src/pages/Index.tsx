@@ -1,8 +1,11 @@
 import { useState, useMemo, useRef } from 'react';
-import { useProducts, Product, formatPrice } from '@/hooks/useProducts';
+import { useProducts, Product } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import FeaturedCollections from '@/components/FeaturedCollections';
+import BrandStory from '@/components/BrandStory';
+import NewsletterSection from '@/components/NewsletterSection';
 import CategoryFilter from '@/components/CategoryFilter';
 import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
@@ -42,14 +45,6 @@ const CatalogueContent = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleCategoryClick = (category: string | null) => {
-    if (category === null) {
-      scrollToProducts();
-    } else {
-      navigate(`/category/${category}`);
-    }
-  };
-
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
@@ -81,10 +76,20 @@ const CatalogueContent = () => {
       <main className="flex-1 pt-16 md:pt-28">
         <Hero onExplore={scrollToProducts} />
 
-        <div ref={productsRef} className="container mx-auto px-4 py-12 md:py-16">
+        {/* Featured Collections */}
+        <FeaturedCollections />
+
+        {/* Brand Story */}
+        <BrandStory />
+
+        {/* Shop by Category Section */}
+        <div ref={productsRef} className="container mx-auto px-4 py-16 md:py-24">
           {/* Section Title */}
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl font-light tracking-[0.15em] uppercase mb-3">
+            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">
+              Browse All
+            </p>
+            <h2 className="text-2xl md:text-4xl font-extralight tracking-[0.1em] uppercase mb-3">
               Shop by Category
             </h2>
             <p className="text-sm text-muted-foreground">
@@ -128,6 +133,9 @@ const CatalogueContent = () => {
             )}
           </div>
         </div>
+
+        {/* Newsletter */}
+        <NewsletterSection />
       </main>
 
       <Footer />

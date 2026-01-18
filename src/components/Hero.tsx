@@ -1,3 +1,4 @@
+import { ArrowRight, Truck, Shield, RefreshCw } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
 
 interface HeroProps {
@@ -6,36 +7,93 @@ interface HeroProps {
 
 const Hero = ({ onExplore }: HeroProps) => {
   return (
-    <section className="relative h-[70vh] md:h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Finite Luxury Collection"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-      </div>
-      
-      {/* Content */}
-      <div className="relative text-center px-4 z-10">
-        <p className="text-xs md:text-sm tracking-[0.4em] uppercase text-foreground/80 mb-4">
-          Men's Collection
-        </p>
-        <h2 className="text-3xl md:text-5xl lg:text-6xl font-extralight tracking-[0.15em] uppercase mb-6">
-          Refined Menswear
-        </h2>
-        <p className="text-sm md:text-base text-foreground/70 max-w-md mx-auto mb-8">
-          Curated pieces for the modern gentleman. Quality over quantity.
-        </p>
-        <button
-          onClick={onExplore}
-          className="inline-block px-8 py-3 border border-foreground text-sm tracking-[0.2em] uppercase hover:bg-foreground hover:text-background transition-all duration-300"
-        >
-          Explore Collection
-        </button>
-      </div>
-    </section>
+    <>
+      {/* Main Hero Section */}
+      <section className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="Finite Luxury Collection"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/20" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative text-center px-4 z-10 max-w-4xl mx-auto">
+          <p className="text-xs md:text-sm tracking-[0.5em] uppercase text-foreground/80 mb-6 animate-fade-in">
+            Premium Men's Fashion
+          </p>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-[0.1em] uppercase mb-6 leading-tight">
+            Elevate Your
+            <br />
+            <span className="font-light">Wardrobe</span>
+          </h2>
+          <p className="text-base md:text-lg text-foreground/70 max-w-lg mx-auto mb-10 leading-relaxed">
+            Discover curated pieces that define modern elegance. 
+            Quality craftsmanship meets timeless design.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={onExplore}
+              className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase hover:bg-foreground/90 transition-all duration-300"
+            >
+              Shop Collection
+              <ArrowRight size={18} />
+            </button>
+            <a
+              href="/new-arrivals"
+              className="inline-flex items-center justify-center gap-3 px-10 py-4 border border-foreground text-sm tracking-[0.2em] uppercase hover:bg-foreground hover:text-background transition-all duration-300"
+            >
+              New Arrivals
+            </a>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border border-foreground/40 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-foreground/60 rounded-full" />
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="bg-secondary py-8 border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="flex items-center justify-center gap-4 text-center md:text-left">
+              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                <Truck size={20} className="text-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium tracking-wide">Free Shipping</p>
+                <p className="text-xs text-muted-foreground">On orders over ₦50,000</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-4 text-center md:text-left">
+              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                <Shield size={20} className="text-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium tracking-wide">Secure Payment</p>
+                <p className="text-xs text-muted-foreground">100% protected checkout</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-4 text-center md:text-left">
+              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                <RefreshCw size={20} className="text-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium tracking-wide">Easy Returns</p>
+                <p className="text-xs text-muted-foreground">30-day return policy</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
