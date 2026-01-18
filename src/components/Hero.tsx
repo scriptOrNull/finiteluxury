@@ -17,6 +17,7 @@ const Hero = ({ onExplore }: HeroProps) => {
             src={heroImage}
             alt="Finite Luxury Collection"
             className="w-full h-full object-cover"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/20" />
         </div>
