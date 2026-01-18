@@ -5,9 +5,10 @@ interface ProductGridProps {
   products: Product[];
   onProductClick: (product: Product) => void;
   title?: string;
+  showSalePrice?: boolean;
 }
 
-const ProductGrid = ({ products, onProductClick, title }: ProductGridProps) => {
+const ProductGrid = ({ products, onProductClick, title, showSalePrice }: ProductGridProps) => {
   return (
     <section className="py-12 md:py-16">
       {title && (
@@ -21,6 +22,7 @@ const ProductGrid = ({ products, onProductClick, title }: ProductGridProps) => {
             key={product.id}
             product={product}
             onClick={() => onProductClick(product)}
+            showSalePrice={showSalePrice}
           />
         ))}
       </div>

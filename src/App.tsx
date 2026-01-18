@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
+import CollectionPage from "./pages/CollectionPage";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import AdminAuth from "./pages/AdminAuth";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -23,6 +24,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/category/:categoryId" element={<CategoryPage />} />
+            <Route path="/new-arrivals" element={<CollectionPage />} />
+            <Route path="/best-sellers" element={<CollectionPage />} />
+            <Route path="/sale" element={<CollectionPage />} />
             <Route path="/checkout" element={<OrderConfirmation />} />
             <Route path="/admin/auth" element={<AdminAuth />} />
             <Route path="/admin" element={<AdminDashboard />} />
