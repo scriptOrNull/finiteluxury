@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Check } from 'lucide-react';
+import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product, formatPrice } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,10 @@ interface ProductModalProps {
 const ProductModal = ({ product, onClose }: ProductModalProps) => {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [added, setAdded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addItem } = useCart();
+
+  const hasMultipleImages = product.images.length > 1;
 
   const handleAddToCart = () => {
     if (!selectedSize) return;
@@ -22,6 +25,14 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
       setAdded(false);
       onClose();
     }, 1000);
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
   return (
@@ -40,13 +51,66 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
         </button>
 
         <div className="grid md:grid-cols-2">
-          {/* Image */}
-          <div className="aspect-square md:aspect-[3/4] bg-muted">
+          {/* Image Gallery */}
+          <div className="relative aspect-square md:aspect-[3/4] bg-muted">
             <img
-              src={product.images[0]}
-              alt={product.name}
+              src={product.images[currentImageIndex]}
+              alt={`${product.name} - Image ${currentImageIndex + 1}`}
               className="w-full h-full object-cover"
             />
+            
+            {/* Navigation Arrows */}
+            {hasMultipleImages && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-background/80 hover:bg-background transition-colors"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-background/80 hover:bg-background transition-colors"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+
+            {/* Image Indicators */}
+            {hasMultipleImages && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {product.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentImageIndex ? 'bg-foreground' : 'bg-foreground/30'
+                    }`}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Thumbnail Strip */}
+            {hasMultipleImages && (
+              <div className="absolute bottom-12 left-0 right-0 flex justify-center gap-2 px-4">
+                {product.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-12 h-12 overflow-hidden border-2 transition-colors ${
+                      index === currentImageIndex ? 'border-foreground' : 'border-transparent'
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Details */}
