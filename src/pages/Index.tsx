@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { products, Product, categories, CategoryId } from '@/data/products';
+import { useProducts, Product, formatPrice } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -12,12 +12,18 @@ import { useNavigate } from 'react-router-dom';
 
 const CatalogueContent = () => {
   const navigate = useNavigate();
-  const [selectedCategories, setSelectedCategories] = useState<CategoryId[]>(
-    categories.map((c) => c.id)
-  );
+  const { products, categories, loading } = useProducts();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const productsRef = useRef<HTMLDivElement>(null);
+
+  // Initialize selected categories when data loads
+  useMemo(() => {
+    if (categories.length > 0 && selectedCategories.length === 0) {
+      setSelectedCategories(categories.map((c) => c.id));
+    }
+  }, [categories]);
 
   const productsByCategory = useMemo(() => {
     return categories
@@ -26,7 +32,7 @@ const CatalogueContent = () => {
         ...cat,
         products: products.filter((p) => p.category === cat.id),
       }));
-  }, [selectedCategories]);
+  }, [selectedCategories, categories, products]);
 
   const totalProducts = useMemo(() => {
     return productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
@@ -44,7 +50,7 @@ const CatalogueContent = () => {
     }
   };
 
-  const toggleCategory = (categoryId: CategoryId) => {
+  const toggleCategory = (categoryId: string) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
         ? prev.filter((id) => id !== categoryId)
@@ -59,6 +65,14 @@ const CatalogueContent = () => {
   const clearAllCategories = () => {
     setSelectedCategories([]);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -84,6 +98,7 @@ const CatalogueContent = () => {
 
           {/* Category Filter */}
           <CategoryFilter
+            categories={categories}
             selectedCategories={selectedCategories}
             onToggleCategory={toggleCategory}
             onSelectAll={selectAllCategories}

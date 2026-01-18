@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products, Product, categories, formatPrice } from '@/data/products';
+import { useProducts, Product, formatPrice } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import ProductGrid from '@/components/ProductGrid';
@@ -12,16 +12,17 @@ import CategoryBanner from '@/components/CategoryBanner';
 const CategoryContent = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
+  const { products, categories, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
 
   const category = useMemo(() => {
     return categories.find((c) => c.id === categoryId);
-  }, [categoryId]);
+  }, [categoryId, categories]);
 
   const categoryProducts = useMemo(() => {
     return products.filter((p) => p.category === categoryId);
-  }, [categoryId]);
+  }, [categoryId, products]);
 
   const featuredProducts = useMemo(() => {
     return categoryProducts.slice(0, 3);
@@ -34,6 +35,14 @@ const CategoryContent = () => {
       navigate(`/category/${cat}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   if (!category) {
     return (

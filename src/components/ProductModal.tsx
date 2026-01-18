@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X, Check, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Product, formatPrice } from '@/data/products';
+import { Product, formatPrice } from '@/hooks/useProducts';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 
