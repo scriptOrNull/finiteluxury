@@ -176,12 +176,12 @@ export const products: Product[] = [
 ];
 
 export const categories = [
-  { id: 'shirts', name: 'Shirts', description: 'Premium tailored shirts' },
-  { id: 'tops', name: 'Tops', description: 'Essential everyday pieces' },
-  { id: 'slides', name: 'Slides', description: 'Comfort meets style' },
-  { id: 'shoes', name: 'Shoes', description: 'Refined footwear' },
-  { id: 'caps', name: 'Caps', description: 'Finishing touches' },
-  { id: 'perfume', name: 'Perfume', description: 'Signature scents' },
+  { id: 'shirts', name: 'Shirts', description: 'Premium tailored shirts for the modern gentleman' },
+  { id: 'tops', name: 'Tops', description: 'Essential everyday pieces for men' },
+  { id: 'slides', name: 'Slides', description: 'Comfort meets masculine style' },
+  { id: 'shoes', name: 'Shoes', description: 'Refined footwear for distinguished men' },
+  { id: 'caps', name: 'Caps', description: 'Finishing touches for the modern man' },
+  { id: 'perfume', name: 'Perfume', description: 'Signature scents for men' },
 ] as const;
 
 export type CategoryId = typeof categories[number]['id'];

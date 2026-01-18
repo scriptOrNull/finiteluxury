@@ -29,8 +29,8 @@ const Cart = ({ onClose }: CartProps) => {
     
     message += `\n*Total: ${formatPrice(totalPrice)}*`;
     
-    // WhatsApp API URL - replace with actual number
-    const whatsappNumber = '2348000000000'; // Placeholder number
+    // WhatsApp API URL
+    const whatsappNumber = '2349033120032';
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     

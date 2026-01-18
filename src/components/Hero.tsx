@@ -20,13 +20,13 @@ const Hero = ({ onExplore }: HeroProps) => {
       {/* Content */}
       <div className="relative text-center px-4 z-10">
         <p className="text-xs md:text-sm tracking-[0.4em] uppercase text-foreground/80 mb-4">
-          New Collection
+          Men's Collection
         </p>
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-extralight tracking-[0.15em] uppercase mb-6">
-          Refined Essentials
+          Refined Menswear
         </h2>
         <p className="text-sm md:text-base text-foreground/70 max-w-md mx-auto mb-8">
-          Curated pieces for the modern wardrobe. Quality over quantity.
+          Curated pieces for the modern gentleman. Quality over quantity.
         </p>
         <button
           onClick={onExplore}
