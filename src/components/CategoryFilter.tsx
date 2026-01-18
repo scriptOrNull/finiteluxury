@@ -1,15 +1,22 @@
-import { categories, CategoryId } from '@/data/products';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+}
+
 interface CategoryFilterProps {
-  selectedCategories: CategoryId[];
-  onToggleCategory: (categoryId: CategoryId) => void;
+  categories: Category[];
+  selectedCategories: string[];
+  onToggleCategory: (categoryId: string) => void;
   onSelectAll: () => void;
   onClearAll: () => void;
 }
 
 const CategoryFilter = ({
+  categories,
   selectedCategories,
   onToggleCategory,
   onSelectAll,

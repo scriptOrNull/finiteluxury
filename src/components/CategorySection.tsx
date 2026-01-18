@@ -1,4 +1,4 @@
-import { Product, formatPrice } from '@/data/products';
+import { Product, formatPrice } from '@/hooks/useProducts';
 import ProductCard from './ProductCard';
 import { useNavigate } from 'react-router-dom';
 

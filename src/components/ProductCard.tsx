@@ -1,4 +1,4 @@
-import { Product, formatPrice } from '@/data/products';
+import { Product, formatPrice } from '@/hooks/useProducts';
 
 interface ProductCardProps {
   product: Product;

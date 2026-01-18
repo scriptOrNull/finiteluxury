@@ -1,0 +1,3 @@
+-- Note: After you sign up, run this query with your user ID to grant admin access
+-- Replace 'YOUR_USER_ID' with your actual user ID from the auth.users table
+-- INSERT INTO public.user_roles (user_id, role) VALUES ('YOUR_USER_ID', 'admin');
