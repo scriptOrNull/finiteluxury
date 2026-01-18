@@ -11,6 +11,7 @@ import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
 import BackToTop from '@/components/BackToTop';
+import ContactButton from '@/components/ContactButton';
 
 const CatalogueContent = () => {
   const { products, categories, loading } = useProducts();
@@ -161,6 +162,7 @@ const CatalogueContent = () => {
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
 
       <BackToTop />
+      <ContactButton />
     </div>
   );
 };
