@@ -9,6 +9,7 @@ import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const CatalogueContent = () => {
   const { products, categories, loading } = useProducts();
@@ -92,26 +93,30 @@ const CatalogueContent = () => {
         {/* Shop by Category Section */}
         <div ref={productsRef} className="container mx-auto px-4 py-16 md:py-24">
           {/* Section Title */}
-          <div className="text-center mb-8 md:mb-12">
-            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">
-              Browse All
-            </p>
-            <h2 className="text-2xl md:text-4xl font-extralight tracking-[0.1em] uppercase mb-3">
-              Shop by Category
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {totalProducts} products across {selectedCategories.length} categories
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-8 md:mb-12">
+              <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">
+                Browse All
+              </p>
+              <h2 className="text-2xl md:text-4xl font-extralight tracking-[0.1em] uppercase mb-3">
+                Shop by Category
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {totalProducts} products across {selectedCategories.length} categories
+              </p>
+            </div>
+          </ScrollReveal>
 
           {/* Category Filter */}
-          <CategoryFilter
-            categories={categories}
-            selectedCategories={selectedCategories}
-            onToggleCategory={toggleCategory}
-            onSelectAll={selectAllCategories}
-            onClearAll={clearAllCategories}
-          />
+          <ScrollReveal delay={0.1}>
+            <CategoryFilter
+              categories={categories}
+              selectedCategories={selectedCategories}
+              onToggleCategory={toggleCategory}
+              onSelectAll={selectAllCategories}
+              onClearAll={clearAllCategories}
+            />
+          </ScrollReveal>
 
           {/* Category Sections */}
           <div className="mt-12">

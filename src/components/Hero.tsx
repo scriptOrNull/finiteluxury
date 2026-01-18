@@ -1,5 +1,6 @@
 import { ArrowRight, Truck, Shield, RefreshCw } from 'lucide-react';
 import heroImage from '@/assets/hero-image.jpg';
+import ScrollReveal from './ScrollReveal';
 
 interface HeroProps {
   onExplore: () => void;
@@ -22,33 +23,41 @@ const Hero = ({ onExplore }: HeroProps) => {
         
         {/* Content */}
         <div className="relative text-center px-4 z-10 max-w-4xl mx-auto">
-          <p className="text-xs md:text-sm tracking-[0.5em] uppercase text-foreground/80 mb-6 animate-fade-in">
-            Premium Men's Fashion
-          </p>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-[0.1em] uppercase mb-6 leading-tight">
-            Elevate Your
-            <br />
-            <span className="font-light">Wardrobe</span>
-          </h2>
-          <p className="text-base md:text-lg text-foreground/70 max-w-lg mx-auto mb-10 leading-relaxed">
-            Discover curated pieces that define modern elegance. 
-            Quality craftsmanship meets timeless design.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={onExplore}
-              className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase hover:bg-foreground/90 transition-all duration-300"
-            >
-              Shop Collection
-              <ArrowRight size={18} />
-            </button>
-            <a
-              href="/new-arrivals"
-              className="inline-flex items-center justify-center gap-3 px-10 py-4 border border-foreground text-sm tracking-[0.2em] uppercase hover:bg-foreground hover:text-background transition-all duration-300"
-            >
-              New Arrivals
-            </a>
-          </div>
+          <ScrollReveal delay={0.1} direction="none">
+            <p className="text-xs md:text-sm tracking-[0.5em] uppercase text-foreground/80 mb-6">
+              Premium Men's Fashion
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2} direction="up">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-[0.1em] uppercase mb-6 leading-tight">
+              Elevate Your
+              <br />
+              <span className="font-light">Wardrobe</span>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3} direction="up">
+            <p className="text-base md:text-lg text-foreground/70 max-w-lg mx-auto mb-10 leading-relaxed">
+              Discover curated pieces that define modern elegance. 
+              Quality craftsmanship meets timeless design.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.4} direction="up">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={onExplore}
+                className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase hover:bg-foreground/90 transition-all duration-300"
+              >
+                Shop Collection
+                <ArrowRight size={18} />
+              </button>
+              <a
+                href="/new-arrivals"
+                className="inline-flex items-center justify-center gap-3 px-10 py-4 border border-foreground text-sm tracking-[0.2em] uppercase hover:bg-foreground hover:text-background transition-all duration-300"
+              >
+                New Arrivals
+              </a>
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Scroll Indicator */}
@@ -63,33 +72,39 @@ const Hero = ({ onExplore }: HeroProps) => {
       <section className="bg-secondary py-8 border-y border-border">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <div className="flex items-center justify-center gap-4 text-center md:text-left">
-              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
-                <Truck size={20} className="text-foreground" />
+            <ScrollReveal delay={0} direction="up">
+              <div className="flex items-center justify-center gap-4 text-center md:text-left">
+                <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                  <Truck size={20} className="text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium tracking-wide">Free Shipping</p>
+                  <p className="text-xs text-muted-foreground">On orders over ₦50,000</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium tracking-wide">Free Shipping</p>
-                <p className="text-xs text-muted-foreground">On orders over ₦50,000</p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1} direction="up">
+              <div className="flex items-center justify-center gap-4 text-center md:text-left">
+                <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                  <Shield size={20} className="text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium tracking-wide">Secure Payment</p>
+                  <p className="text-xs text-muted-foreground">100% protected checkout</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-center md:text-left">
-              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
-                <Shield size={20} className="text-foreground" />
+            </ScrollReveal>
+            <ScrollReveal delay={0.2} direction="up">
+              <div className="flex items-center justify-center gap-4 text-center md:text-left">
+                <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
+                  <RefreshCw size={20} className="text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium tracking-wide">Easy Returns</p>
+                  <p className="text-xs text-muted-foreground">30-day return policy</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium tracking-wide">Secure Payment</p>
-                <p className="text-xs text-muted-foreground">100% protected checkout</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-center md:text-left">
-              <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center flex-shrink-0">
-                <RefreshCw size={20} className="text-foreground" />
-              </div>
-              <div>
-                <p className="text-sm font-medium tracking-wide">Easy Returns</p>
-                <p className="text-xs text-muted-foreground">30-day return policy</p>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
