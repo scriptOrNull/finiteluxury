@@ -54,11 +54,7 @@ const CategoryContent = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header
-        onCartClick={() => setCartOpen(true)}
-        onCategoryClick={handleCategoryClick}
-        activeCategory={categoryId || null}
-      />
+      <Header onCartClick={() => setCartOpen(true)} />
 
       <main className="flex-1 pt-16 md:pt-28">
         <CategoryBanner category={category} productCount={categoryProducts.length} />
