@@ -11,12 +11,22 @@ export interface Product {
   id: string;
   name: string;
   price: number;
-  category: 'shirts' | 'tops' | 'slides' | 'shoes' | 'caps' | 'perfume';
-  images: string[];
+  category: CategoryId;
+  images: string[]; // Add multiple images: [mainImage, image2, image3, ...]
   sizes: string[];
   colors?: string[];
   description?: string;
 }
+
+/**
+ * HOW TO ADD NEW CATEGORIES:
+ * 1. Add the category object to the 'categories' array below
+ * 2. The CategoryId type will automatically update
+ * 3. Add products with the new category id
+ * 
+ * Example:
+ * { id: 'watches', name: 'Watches', description: 'Luxury timepieces for men' }
+ */
 
 export const products: Product[] = [
   // Shirts
@@ -175,6 +185,10 @@ export const products: Product[] = [
   },
 ];
 
+/**
+ * CATEGORIES - Add new categories here
+ * The category id becomes available for products automatically
+ */
 export const categories = [
   { id: 'shirts', name: 'Shirts', description: 'Premium tailored shirts for the modern gentleman' },
   { id: 'tops', name: 'Tops', description: 'Essential everyday pieces for men' },
@@ -182,6 +196,9 @@ export const categories = [
   { id: 'shoes', name: 'Shoes', description: 'Refined footwear for distinguished men' },
   { id: 'caps', name: 'Caps', description: 'Finishing touches for the modern man' },
   { id: 'perfume', name: 'Perfume', description: 'Signature scents for men' },
+  // Add more categories here, e.g.:
+  // { id: 'watches', name: 'Watches', description: 'Luxury timepieces for men' },
+  // { id: 'bags', name: 'Bags', description: 'Premium leather bags and accessories' },
 ] as const;
 
 export type CategoryId = typeof categories[number]['id'];
