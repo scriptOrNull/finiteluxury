@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Plus, Edit, Trash2, LogOut, Package, Tags } from 'lucide-react';
 import { toast } from 'sonner';
+import ImageUpload from '@/components/ImageUpload';
 
 interface Category {
   id: string;
@@ -45,7 +46,7 @@ const AdminDashboard = () => {
     name: '',
     price: '',
     category_id: '',
-    images: '',
+    images: [] as string[],
     sizes: '',
     colors: '',
     description: '',
@@ -104,7 +105,7 @@ const AdminDashboard = () => {
       name: productForm.name.trim(),
       price: parseInt(productForm.price),
       category_id: productForm.category_id,
-      images: productForm.images.split(',').map(s => s.trim()).filter(Boolean),
+      images: productForm.images,
       sizes: productForm.sizes.split(',').map(s => s.trim()).filter(Boolean),
       colors: productForm.colors ? productForm.colors.split(',').map(s => s.trim()).filter(Boolean) : null,
       description: productForm.description.trim() || null,
@@ -207,7 +208,7 @@ const AdminDashboard = () => {
       name: '',
       price: '',
       category_id: '',
-      images: '',
+      images: [],
       sizes: '',
       colors: '',
       description: '',
@@ -229,7 +230,7 @@ const AdminDashboard = () => {
       name: product.name,
       price: product.price.toString(),
       category_id: product.category_id,
-      images: product.images.join(', '),
+      images: product.images,
       sizes: product.sizes.join(', '),
       colors: product.colors?.join(', ') || '',
       description: product.description || '',
@@ -388,12 +389,11 @@ const AdminDashboard = () => {
                   </div>
                   
                   <div className="space-y-2 md:col-span-2">
-                    <Label>Image URLs (comma-separated) *</Label>
-                    <Input
-                      value={productForm.images}
-                      onChange={(e) => setProductForm(p => ({ ...p, images: e.target.value }))}
-                      placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                      required
+                    <Label>Product Images *</Label>
+                    <ImageUpload
+                      images={productForm.images}
+                      onImagesChange={(images) => setProductForm(p => ({ ...p, images }))}
+                      maxImages={5}
                     />
                   </div>
                   
