@@ -10,6 +10,7 @@ import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategoryBanner from '@/components/CategoryBanner';
 import BackToTop from '@/components/BackToTop';
+import ContactButton from '@/components/ContactButton';
 
 const CategoryContent = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -127,6 +128,7 @@ const CategoryContent = () => {
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
 
       <BackToTop />
+      <ContactButton />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
+import ContactButton from '@/components/ContactButton';
 
 const collectionConfig = {
   'new-arrivals': {
@@ -133,6 +134,7 @@ const CollectionContent = () => {
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
 
       <BackToTop />
+      <ContactButton />
     </div>
   );
 };
