@@ -1,41 +1,63 @@
 import { useState, useMemo, useRef } from 'react';
-import { products, Product, categories } from '@/data/products';
+import { products, Product, categories, CategoryId } from '@/data/products';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import ProductGrid from '@/components/ProductGrid';
+import CategoryFilter from '@/components/CategoryFilter';
+import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const CatalogueContent = () => {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [selectedCategories, setSelectedCategories] = useState<CategoryId[]>(
+    categories.map((c) => c.id)
+  );
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const productsRef = useRef<HTMLDivElement>(null);
 
-  const filteredProducts = useMemo(() => {
-    if (!activeCategory) return products;
-    return products.filter((p) => p.category === activeCategory);
-  }, [activeCategory]);
+  const productsByCategory = useMemo(() => {
+    return categories
+      .filter((cat) => selectedCategories.includes(cat.id))
+      .map((cat) => ({
+        ...cat,
+        products: products.filter((p) => p.category === cat.id),
+      }));
+  }, [selectedCategories]);
 
-  const categoryTitle = useMemo(() => {
-    if (!activeCategory) return 'All Products';
-    const cat = categories.find((c) => c.id === activeCategory);
-    return cat?.name || 'Products';
-  }, [activeCategory]);
+  const totalProducts = useMemo(() => {
+    return productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
+  }, [productsByCategory]);
 
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleCategoryClick = (category: string | null) => {
-    setActiveCategory(category);
-    if (category !== null) {
-      setTimeout(() => {
-        scrollToProducts();
-      }, 100);
+    if (category === null) {
+      scrollToProducts();
+    } else {
+      navigate(`/category/${category}`);
     }
+  };
+
+  const toggleCategory = (categoryId: CategoryId) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const selectAllCategories = () => {
+    setSelectedCategories(categories.map((c) => c.id));
+  };
+
+  const clearAllCategories = () => {
+    setSelectedCategories([]);
   };
 
   return (
@@ -43,18 +65,57 @@ const CatalogueContent = () => {
       <Header
         onCartClick={() => setCartOpen(true)}
         onCategoryClick={handleCategoryClick}
-        activeCategory={activeCategory}
+        activeCategory={null}
       />
 
       <main className="flex-1 pt-16 md:pt-28">
-        {!activeCategory && <Hero onExplore={scrollToProducts} />}
+        <Hero onExplore={scrollToProducts} />
 
-        <div ref={productsRef} className="container mx-auto px-4">
-          <ProductGrid
-            products={filteredProducts}
-            onProductClick={setSelectedProduct}
-            title={categoryTitle}
+        <div ref={productsRef} className="container mx-auto px-4 py-12 md:py-16">
+          {/* Section Title */}
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-light tracking-[0.15em] uppercase mb-3">
+              Shop by Category
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {totalProducts} products across {selectedCategories.length} categories
+            </p>
+          </div>
+
+          {/* Category Filter */}
+          <CategoryFilter
+            selectedCategories={selectedCategories}
+            onToggleCategory={toggleCategory}
+            onSelectAll={selectAllCategories}
+            onClearAll={clearAllCategories}
           />
+
+          {/* Category Sections */}
+          <div className="mt-12">
+            {productsByCategory.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground mb-4">
+                  No categories selected
+                </p>
+                <button
+                  onClick={selectAllCategories}
+                  className="text-sm tracking-wide uppercase border-b border-foreground pb-0.5 hover:opacity-70 transition-opacity"
+                >
+                  Show all categories
+                </button>
+              </div>
+            ) : (
+              productsByCategory.map((category) => (
+                <CategorySection
+                  key={category.id}
+                  categoryId={category.id}
+                  categoryName={category.name}
+                  products={category.products}
+                  onProductClick={setSelectedProduct}
+                />
+              ))
+            )}
+          </div>
         </div>
       </main>
 
