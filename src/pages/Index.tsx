@@ -3,18 +3,13 @@ import { useProducts, Product } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import FeaturedCollections from '@/components/FeaturedCollections';
-import BrandStory from '@/components/BrandStory';
-import NewsletterSection from '@/components/NewsletterSection';
 import CategoryFilter from '@/components/CategoryFilter';
 import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
-import { useNavigate } from 'react-router-dom';
 
 const CatalogueContent = () => {
-  const navigate = useNavigate();
   const { products, categories, loading } = useProducts();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -76,12 +71,6 @@ const CatalogueContent = () => {
       <main className="flex-1 pt-16 md:pt-28">
         <Hero onExplore={scrollToProducts} />
 
-        {/* Featured Collections */}
-        <FeaturedCollections />
-
-        {/* Brand Story */}
-        <BrandStory />
-
         {/* Shop by Category Section */}
         <div ref={productsRef} className="container mx-auto px-4 py-16 md:py-24">
           {/* Section Title */}
@@ -133,9 +122,6 @@ const CatalogueContent = () => {
             )}
           </div>
         </div>
-
-        {/* Newsletter */}
-        <NewsletterSection />
       </main>
 
       <Footer />
