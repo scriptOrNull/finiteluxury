@@ -1,4 +1,5 @@
-import { X, Minus, Plus, Trash2, MessageCircle } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { formatPrice } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -7,34 +8,13 @@ interface CartProps {
   onClose: () => void;
 }
 
-const generateOrderRef = (): string => {
-  const num = Math.floor(10000 + Math.random() * 90000);
-  return `FL-${num}`;
-};
-
 const Cart = ({ onClose }: CartProps) => {
+  const navigate = useNavigate();
   const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
 
-  const handleWhatsAppCheckout = () => {
-    const orderRef = generateOrderRef();
-    
-    let message = `Hello 👋\nI'd like to place an order from Finite Luxury.\n\n`;
-    message += `*Order Ref: ${orderRef}*\n\n`;
-    message += `*Items:*\n`;
-    
-    items.forEach((item) => {
-      const itemTotal = formatPrice(item.product.price * item.quantity);
-      message += `• ${item.product.name} (Size ${item.size}) × ${item.quantity} – ${itemTotal}\n`;
-    });
-    
-    message += `\n*Total: ${formatPrice(totalPrice)}*`;
-    
-    // WhatsApp API URL
-    const whatsappNumber = '2349033120032';
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-    
-    window.open(whatsappUrl, '_blank');
+  const handleProceedToCheckout = () => {
+    onClose();
+    navigate('/checkout');
   };
 
   return (
@@ -139,11 +119,11 @@ const Cart = ({ onClose }: CartProps) => {
               <span className="text-lg font-medium">{formatPrice(totalPrice)}</span>
             </div>
             <Button
-              onClick={handleWhatsAppCheckout}
-              className="w-full h-12 bg-[#25D366] hover:bg-[#22c55e] text-white"
+              onClick={handleProceedToCheckout}
+              className="w-full h-12"
             >
-              <MessageCircle size={18} className="mr-2" />
-              <span className="tracking-wider uppercase text-sm">Order via WhatsApp</span>
+              <ShoppingBag size={18} className="mr-2" />
+              <span className="tracking-wider uppercase text-sm">Proceed to Checkout</span>
             </Button>
             <button
               onClick={clearCart}
