@@ -10,6 +10,7 @@ import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
+import BackToTop from '@/components/BackToTop';
 
 const CatalogueContent = () => {
   const { products, categories, loading } = useProducts();
@@ -158,6 +159,8 @@ const CatalogueContent = () => {
       )}
 
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
+
+      <BackToTop />
     </div>
   );
 };
