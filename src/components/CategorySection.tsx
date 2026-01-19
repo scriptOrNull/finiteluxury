@@ -1,12 +1,14 @@
 import { Product, formatPrice } from '@/hooks/useProducts';
 import ProductCard from './ProductCard';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 interface CategorySectionProps {
   categoryId: string;
   categoryName: string;
   products: Product[];
   onProductClick: (product: Product) => void;
+  isPreview?: boolean;
 }
 
 const CategorySection = ({
@@ -14,6 +16,7 @@ const CategorySection = ({
   categoryName,
   products,
   onProductClick,
+  isPreview = false,
 }: CategorySectionProps) => {
   const navigate = useNavigate();
 
@@ -33,16 +36,25 @@ const CategorySection = ({
             {categoryName}
           </h2>
         </div>
-        <div className="text-right">
-          <p className="text-xs text-muted-foreground mb-1">
-            {products.length} {products.length === 1 ? 'item' : 'items'}
-          </p>
-          <p className="text-sm">From {formatPrice(minPrice)}</p>
+        <div className="text-right flex items-center gap-4">
+          <div>
+            <p className="text-xs text-muted-foreground mb-1">
+              {isPreview ? 'Preview' : `${products.length} ${products.length === 1 ? 'item' : 'items'}`}
+            </p>
+            <p className="text-sm">From {formatPrice(minPrice)}</p>
+          </div>
+          <button
+            onClick={() => navigate(`/category/${categoryId}`)}
+            className="w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center hover:bg-foreground hover:text-background transition-all duration-300 group"
+            aria-label={`View all ${categoryName}`}
+          >
+            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+          </button>
         </div>
       </div>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {products.map((product) => (
           <ProductCard
             key={product.id}
@@ -50,17 +62,6 @@ const CategorySection = ({
             onClick={() => onProductClick(product)}
           />
         ))}
-      </div>
-
-      {/* View All Link */}
-      <div className="text-center">
-        <button
-          onClick={() => navigate(`/category/${categoryId}`)}
-          className="inline-flex items-center gap-2 text-sm tracking-[0.1em] uppercase opacity-70 hover:opacity-100 transition-opacity border-b border-transparent hover:border-foreground pb-0.5"
-        >
-          View All {categoryName}
-          <span className="text-lg">→</span>
-        </button>
       </div>
     </section>
   );
