@@ -1,10 +1,9 @@
 import { useState, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useProducts, Product } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-
-import CategoryFilter from '@/components/CategoryFilter';
 import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
 import Cart from '@/components/Cart';
@@ -12,52 +11,29 @@ import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
 import BackToTop from '@/components/BackToTop';
 import ContactButton from '@/components/ContactButton';
+import { ArrowRight } from 'lucide-react';
 
 const CatalogueContent = () => {
   const { products, categories, loading } = useProducts();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const productsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-  // Initialize selected categories when data loads
-  useMemo(() => {
-    if (categories.length > 0 && selectedCategories.length === 0) {
-      setSelectedCategories(categories.map((c) => c.id));
-    }
-  }, [categories]);
-
-  const productsByCategory = useMemo(() => {
+  // Show only first 3 categories with max 4 products each for landing page
+  const previewCategories = useMemo(() => {
     return categories
-      .filter((cat) => selectedCategories.includes(cat.id))
+      .slice(0, 3)
       .map((cat) => ({
         ...cat,
-        products: products.filter((p) => p.category === cat.id),
+        products: products.filter((p) => p.category === cat.id).slice(0, 4),
       }));
-  }, [selectedCategories, categories, products]);
+  }, [categories, products]);
 
-  const totalProducts = useMemo(() => {
-    return productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
-  }, [productsByCategory]);
+  const totalCategories = categories.length;
 
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const toggleCategory = (categoryId: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId]
-    );
-  };
-
-  const selectAllCategories = () => {
-    setSelectedCategories(categories.map((c) => c.id));
-  };
-
-  const clearAllCategories = () => {
-    setSelectedCategories([]);
   };
 
   if (loading) {
@@ -89,61 +65,54 @@ const CatalogueContent = () => {
       <main className="flex-1 pt-16 md:pt-28">
         <Hero onExplore={scrollToProducts} />
 
-
-        {/* Shop by Category Section */}
+        {/* Featured Categories Section */}
         <div ref={productsRef} className="container mx-auto px-4 py-16 md:py-24">
           {/* Section Title */}
           <ScrollReveal>
             <div className="text-center mb-8 md:mb-12">
               <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">
-                Browse All
+                Explore Our Collection
               </p>
               <h2 className="text-2xl md:text-4xl font-extralight tracking-[0.1em] uppercase mb-3">
-                Shop by Category
+                Featured Categories
               </h2>
               <p className="text-sm text-muted-foreground">
-                {totalProducts} products across {selectedCategories.length} categories
+                Curated selections from {totalCategories} categories
               </p>
             </div>
           </ScrollReveal>
 
-          {/* Category Filter */}
-          <ScrollReveal delay={0.1}>
-            <CategoryFilter
-              categories={categories}
-              selectedCategories={selectedCategories}
-              onToggleCategory={toggleCategory}
-              onSelectAll={selectAllCategories}
-              onClearAll={clearAllCategories}
-            />
-          </ScrollReveal>
-
-          {/* Category Sections */}
-          <div className="mt-12">
-            {productsByCategory.length === 0 ? (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground mb-4">
-                  No categories selected
-                </p>
-                <button
-                  onClick={selectAllCategories}
-                  className="text-sm tracking-wide uppercase border-b border-foreground pb-0.5 hover:opacity-70 transition-opacity"
-                >
-                  Show all categories
-                </button>
-              </div>
-            ) : (
-              productsByCategory.map((category) => (
-                <CategorySection
-                  key={category.id}
-                  categoryId={category.id}
-                  categoryName={category.name}
-                  products={category.products}
-                  onProductClick={setSelectedProduct}
-                />
-              ))
-            )}
+          {/* Category Sections - Preview Mode */}
+          <div className="mt-8">
+            {previewCategories.map((category) => (
+              <CategorySection
+                key={category.id}
+                categoryId={category.id}
+                categoryName={category.name}
+                products={category.products}
+                onProductClick={setSelectedProduct}
+                isPreview
+              />
+            ))}
           </div>
+
+          {/* View All Categories Button */}
+          {totalCategories > 3 && (
+            <ScrollReveal delay={0.2}>
+              <div className="text-center mt-12 pt-8 border-t border-border">
+                <button
+                  onClick={() => navigate('/collections')}
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase hover:bg-foreground/90 transition-all duration-300 group"
+                >
+                  View All Categories
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+                <p className="text-xs text-muted-foreground mt-3">
+                  Browse all {totalCategories} categories
+                </p>
+              </div>
+            </ScrollReveal>
+          )}
         </div>
       </main>
 
