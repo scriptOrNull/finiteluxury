@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Edit, Trash2, LogOut, Package, Tags } from 'lucide-react';
 import { toast } from 'sonner';
 import ImageUpload from '@/components/ImageUpload';
+import CSVProductImport from '@/components/CSVProductImport';
 
 interface Category {
   id: string;
@@ -379,12 +380,18 @@ const AdminDashboard = () => {
         {/* Products Tab */}
         {activeTab === 'products' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
               <h2 className="text-lg font-light">Manage Products</h2>
-              <Button onClick={() => setShowProductForm(true)}>
-                <Plus size={16} className="mr-2" />
-                Add Product
-              </Button>
+              <div className="flex gap-2">
+                <CSVProductImport 
+                  categories={categories} 
+                  onImportComplete={fetchProducts} 
+                />
+                <Button onClick={() => setShowProductForm(true)}>
+                  <Plus size={16} className="mr-2" />
+                  Add Product
+                </Button>
+              </div>
             </div>
 
             {/* Product Form */}
