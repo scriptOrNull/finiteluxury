@@ -23,10 +23,14 @@ const CatalogueContent = () => {
 
   // Show all categories with max 4 products each for landing page preview
   const previewCategories = useMemo(() => {
-    return categories.map((cat) => ({
-      ...cat,
-      products: products.filter((p) => p.category === cat.id).slice(0, 4),
-    }));
+    return categories.map((cat) => {
+      const allCategoryProducts = products.filter((p) => p.category === cat.id);
+      return {
+        ...cat,
+        products: allCategoryProducts.slice(0, 4),
+        totalCount: allCategoryProducts.length,
+      };
+    });
   }, [categories, products]);
 
   const totalCategories = categories.length;
@@ -91,6 +95,7 @@ const CatalogueContent = () => {
                 products={category.products}
                 onProductClick={setSelectedProduct}
                 isPreview
+                totalProductCount={category.totalCount}
               />
             ))}
           </div>

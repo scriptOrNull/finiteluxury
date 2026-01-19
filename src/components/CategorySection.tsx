@@ -9,6 +9,7 @@ interface CategorySectionProps {
   products: Product[];
   onProductClick: (product: Product) => void;
   isPreview?: boolean;
+  totalProductCount?: number;
 }
 
 const CategorySection = ({
@@ -17,6 +18,7 @@ const CategorySection = ({
   products,
   onProductClick,
   isPreview = false,
+  totalProductCount,
 }: CategorySectionProps) => {
   const navigate = useNavigate();
 
@@ -47,7 +49,7 @@ const CategorySection = ({
             onClick={() => navigate(`/category/${categoryId}`)}
             className="inline-flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 border border-foreground/20 text-xs md:text-sm tracking-[0.1em] uppercase hover:bg-foreground hover:text-background transition-all duration-300 group"
           >
-            <span>View All</span>
+            <span>View All{totalProductCount ? ` (${totalProductCount})` : ''}</span>
             <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
