@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
 import BackToTop from '@/components/BackToTop';
 import ContactButton from '@/components/ContactButton';
-import MobileBottomNav from '@/components/MobileBottomNav';
+
 
 const CollectionsContent = () => {
   const { products, categories, loading } = useProducts();
@@ -72,7 +72,7 @@ const CollectionsContent = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
+    <div className="min-h-screen flex flex-col">
       <Header onCartClick={() => setCartOpen(true)} />
 
       <main className="flex-1 pt-16 md:pt-28">
@@ -151,7 +151,7 @@ const CollectionsContent = () => {
 
       <BackToTop />
       <ContactButton />
-      <MobileBottomNav onCartClick={() => setCartOpen(true)} />
+      
     </div>
   );
 };
