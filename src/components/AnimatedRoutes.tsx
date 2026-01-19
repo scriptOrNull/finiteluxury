@@ -7,6 +7,7 @@ import Index from '@/pages/Index';
 // Lazy load non-critical routes
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const CollectionPage = lazy(() => import('@/pages/CollectionPage'));
+const CollectionsPage = lazy(() => import('@/pages/CollectionsPage'));
 const OrderConfirmation = lazy(() => import('@/pages/OrderConfirmation'));
 const AdminAuth = lazy(() => import('@/pages/AdminAuth'));
 const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'));
@@ -43,6 +44,16 @@ const AnimatedRoutes = () => {
             <PageTransition>
               <Suspense fallback={<LoadingFallback />}>
                 <CategoryPage />
+              </Suspense>
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/collections"
+          element={
+            <PageTransition>
+              <Suspense fallback={<LoadingFallback />}>
+                <CollectionsPage />
               </Suspense>
             </PageTransition>
           }
