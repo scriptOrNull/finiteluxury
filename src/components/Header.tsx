@@ -50,7 +50,7 @@ const Header = ({ onCartClick }: HeaderProps) => {
               onClick={() => navigate('/')}
               className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
             >
-              <h1 className="text-lg md:text-2xl font-light tracking-[0.3em] uppercase">
+              <h1 className="text-sm md:text-base font-medium tracking-[0.15em] uppercase" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                 Finite Luxury
               </h1>
             </button>
