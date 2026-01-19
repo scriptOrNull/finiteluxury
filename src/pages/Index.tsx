@@ -3,7 +3,7 @@ import { useProducts, Product } from '@/hooks/useProducts';
 import { CartProvider } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import Lookbook from '@/components/Lookbook';
+
 import CategoryFilter from '@/components/CategoryFilter';
 import CategorySection from '@/components/CategorySection';
 import ProductModal from '@/components/ProductModal';
@@ -89,8 +89,6 @@ const CatalogueContent = () => {
       <main className="flex-1 pt-16 md:pt-28">
         <Hero onExplore={scrollToProducts} />
 
-        {/* Lookbook Gallery */}
-        <Lookbook />
 
         {/* Shop by Category Section */}
         <div ref={productsRef} className="container mx-auto px-4 py-16 md:py-24">
