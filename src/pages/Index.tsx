@@ -21,14 +21,12 @@ const CatalogueContent = () => {
   const productsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Show only first 3 categories with max 4 products each for landing page
+  // Show all categories with max 4 products each for landing page preview
   const previewCategories = useMemo(() => {
-    return categories
-      .slice(0, 3)
-      .map((cat) => ({
-        ...cat,
-        products: products.filter((p) => p.category === cat.id).slice(0, 4),
-      }));
+    return categories.map((cat) => ({
+      ...cat,
+      products: products.filter((p) => p.category === cat.id).slice(0, 4),
+    }));
   }, [categories, products]);
 
   const totalCategories = categories.length;
@@ -97,23 +95,6 @@ const CatalogueContent = () => {
             ))}
           </div>
 
-          {/* View All Categories Button */}
-          {totalCategories > 3 && (
-            <ScrollReveal delay={0.2}>
-              <div className="text-center mt-12 pt-8 border-t border-border">
-                <button
-                  onClick={() => navigate('/collections')}
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-foreground text-background text-sm tracking-[0.2em] uppercase hover:bg-foreground/90 transition-all duration-300 group"
-                >
-                  View All Categories
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-                <p className="text-xs text-muted-foreground mt-3">
-                  Browse all {totalCategories} categories
-                </p>
-              </div>
-            </ScrollReveal>
-          )}
         </div>
       </main>
 
