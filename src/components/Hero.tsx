@@ -11,15 +11,20 @@ const Hero = ({ onExplore }: HeroProps) => {
     <>
       {/* Main Hero Section */}
       <section className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image with Ken Burns effect */}
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="Finite Luxury Collection"
-            className="w-full h-full object-cover"
-            fetchPriority="high"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/20" />
+          <div className="absolute inset-0 animate-ken-burns">
+            <img
+              src={heroImage}
+              alt="Finite Luxury Collection"
+              className="w-full h-full object-cover scale-110"
+              fetchPriority="high"
+            />
+          </div>
+          {/* Multi-layer gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-background/30" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background)/0.4)_100%)]" />
         </div>
         
         {/* Content */}
